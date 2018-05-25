@@ -19,53 +19,115 @@
 
 import PerfectHTTP
 import PerfectHTTPServer
+import PerfectLib
 
-// An example request handler.
-// This 'handler' function can be referenced directly in the configuration below.
-func handler(request: HTTPRequest, response: HTTPResponse) {
-	// Respond with a simple message.
-	response.setHeader(.contentType, value: "text/html")
-	response.appendBody(string: "<html><title>Hello, world!</title><body>Hello, world!</body></html>")
-	// Ensure that response.completed() is called when your processing is done.
-	response.completed()
+let students = Students()
+let courses = Courses()
+
+
+// MARK: - Routes
+func addRoutes(students: Students, courses: Courses) -> Routes{
+    var routes = Routes()
+    
+    //display all courses
+    routes.add(method: .get, uri: "/course/all", handler: {
+        request, response in
+        response.setHeader(.contentType, value: "application/json")
+        response.appendBody(string: courses.listAll())
+        response.completed()
+    })
+    
+    //Display all students
+    routes.add(method: .get, uri: "/student", handler: {
+        request, response in
+        response.setHeader(.contentType, value: "application/json")
+        response.appendBody(string: students.listAllStudents())
+        response.completed()
+    })
+    
+    //add new student
+    routes.add(method: .post, uri: "/student", handler: {
+        request, response in
+        response.setHeader(.contentType, value: "application/json")
+        students.newStudent(request.postBodyString!)
+        response.appendBody(string: students.listAllStudents())
+        response.completed()
+    })
+
+    //searches student by student id
+    routes.add(method: .get, uri: "/student/{student_id}", handler: {
+        request, response in
+        response.setHeader(.contentType, value: "application/json")
+        guard let studentIdString = request.urlVariables["student_id"],
+            let studentIdInt = Int(studentIdString) else {
+                response.completed(status: .badRequest)
+                return
+        }
+        response.appendBody(string: students.searchStudentById(studentId: studentIdInt))
+        response.completed()
+    })
+
+    //delete student by student id
+    routes.add(method: .delete, uri: "/student/{student_id}", handler: {
+        request, response in
+        response.setHeader(.contentType, value: "application/json")
+        guard let studentIdString = request.urlVariables["student_id"],
+            let studentIdInt = Int(studentIdString) else {
+                response.completed(status: .badRequest)
+                return
+        }
+        students.deleteStudent(studentId: studentIdInt)
+        response.appendBody(string: students.listAllStudents())
+        response.completed()
+    })
+
+    //change student attendance by studentId
+    routes.add(method: .put, uri: "/{course_name}/attendance/{date}/{student_id}/{update}", handler: {
+        request, response in
+        response.setHeader(.contentType, value: "application/json")
+
+        guard let courseNameString = request.urlVariables["course_name"] else {
+            response.completed(status: .badRequest)
+            return
+        }
+
+        guard let dateString = request.urlVariables["date"] else {
+            response.completed(status: .badRequest)
+            return
+        }
+
+        guard let studentIdString = request.urlVariables["student_id"],
+            let studentIdInt = Int(studentIdString) else {
+                response.completed(status: .badRequest)
+                return
+        }
+
+        guard let updateString = request.urlVariables["update"],
+            let updateBool = Bool(updateString) else {
+                response.completed(status: .badRequest)
+                return
+        }
+
+        response.appendBody(string: courses.updateAttendance(courseSearch: courseNameString, dateSearch: dateString, idSearch: studentIdInt, update: updateBool))
+        response.completed()
+    })
+    return routes
 }
 
-// Configuration data for an example server.
-// This example configuration shows how to launch a server
-// using a configuration dictionary.
+// MARK: - Server config
+func configServer(routes: Routes) -> HTTPServer {
+    let server = HTTPServer()
+    server.serverPort = 8080
+    server.addRoutes(routes)
+    return server
+}
 
+let endRoutes = addRoutes(students: students, courses: courses)
+let server = configServer(routes: endRoutes)
 
-let confData = [
-	"servers": [
-		// Configuration data for one server which:
-		//	* Serves the hello world message at <host>:<port>/
-		//	* Serves static files out of the "./webroot"
-		//		directory (which must be located in the current working directory).
-		//	* Performs content compression on outgoing data when appropriate.
-		[
-			"name":"localhost",
-			"port":8181,
-			"routes":[
-				["method":"get", "uri":"/", "handler":handler],
-				["method":"get", "uri":"/**", "handler":PerfectHTTPServer.HTTPHandler.staticFiles,
-				 "documentRoot":"./webroot",
-				 "allowResponseFilters":true]
-			],
-			"filters":[
-				[
-				"type":"response",
-				"priority":"high",
-				"name":PerfectHTTPServer.HTTPFilter.contentCompression,
-				]
-			]
-		]
-	]
-]
-
+// MARK: - Start server
 do {
-	// Launch the servers based on the configuration data.
-	try HTTPServer.launch(configurationData: confData)
-} catch {
-	fatalError("\(error)") // fatal error launching one of the servers
+    try server.start()
+} catch PerfectError.networkError(let err, let msg) {
+    print("Network error thrown: \(err) \(msg)")
 }
-

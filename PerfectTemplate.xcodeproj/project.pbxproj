@@ -13,6 +13,7 @@
 		F3ED7A2A20B6AB3A00C41F33 /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3ED7A2920B6AB3A00C41F33 /* Course.swift */; };
 		F3ED7A2C20B6AB4D00C41F33 /* Lesson.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3ED7A2B20B6AB4D00C41F33 /* Lesson.swift */; };
 		F3ED7A2E20B6AB5E00C41F33 /* Attendance.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3ED7A2D20B6AB5E00C41F33 /* Attendance.swift */; };
+		F3F9491C20B885FE00341B45 /* DecodeAll.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F9491B20B885FE00341B45 /* DecodeAll.swift */; };
 		OBJ_367 /* a_.c in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_98 /* a_.c */; };
 		OBJ_368 /* aes_.c in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_99 /* aes_.c */; };
 		OBJ_369 /* ameth_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_100 /* ameth_lib.c */; };
@@ -570,6 +571,7 @@
 		F3ED7A2920B6AB3A00C41F33 /* Course.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Course.swift; sourceTree = "<group>"; };
 		F3ED7A2B20B6AB4D00C41F33 /* Lesson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lesson.swift; sourceTree = "<group>"; };
 		F3ED7A2D20B6AB5E00C41F33 /* Attendance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attendance.swift; sourceTree = "<group>"; };
+		F3F9491B20B885FE00341B45 /* DecodeAll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodeAll.swift; sourceTree = "<group>"; };
 		OBJ_100 /* ameth_lib.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ameth_lib.c; sourceTree = "<group>"; };
 		OBJ_101 /* asn1_.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = asn1_.c; sourceTree = "<group>"; };
 		OBJ_102 /* asn_.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = asn_.c; sourceTree = "<group>"; };
@@ -1189,7 +1191,7 @@
 			path = ".build/checkouts/Perfect-CZlib-src.git--8503750424862953877/PerfectCZlib";
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -1198,7 +1200,6 @@
 				OBJ_10 /* Dependencies */,
 				OBJ_351 /* Products */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_56 /* include */ = {
@@ -1251,6 +1252,7 @@
 				F3ED7A2920B6AB3A00C41F33 /* Course.swift */,
 				F3ED7A2B20B6AB4D00C41F33 /* Lesson.swift */,
 				F3ED7A2D20B6AB5E00C41F33 /* Attendance.swift */,
+				F3F9491B20B885FE00341B45 /* DecodeAll.swift */,
 			);
 			path = Sources;
 			sourceTree = SOURCE_ROOT;
@@ -1890,7 +1892,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_351 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -2341,6 +2343,7 @@
 				F3ED7A2C20B6AB4D00C41F33 /* Lesson.swift in Sources */,
 				F3ED7A2620B6AB1E00C41F33 /* Student.swift in Sources */,
 				F3ED7A2420B6AAAB00C41F33 /* Students.swift in Sources */,
+				F3F9491C20B885FE00341B45 /* DecodeAll.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
