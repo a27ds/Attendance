@@ -22,13 +22,6 @@ class Courses: Codable {
         }
     }
     
-    func listAll() -> String {
-        var out = [String]()
-        for c in courses {
-            out.append(c.toJson(course: c))
-        }
-        return "{\"courses\": [\(out.joined(separator: ","))]}"
-    }
     func addMockupCourses() {
         courses = [
             Course(name: "Api"),
@@ -45,6 +38,11 @@ class Courses: Codable {
             course.addLesson(date: "2018-04-01")
             course.addLesson(date: "2018-05-01")
         }
+    }
+    
+    func listAll() -> String {
+        let outString = try? JSONEncoder().encode(courses)
+        return String(data: outString!, encoding: .utf8)!
     }
     
     func updateAttendance(courseSearch: String, dateSearch: String, idSearch: Int, update: Bool) -> String{
